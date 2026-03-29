@@ -1,0 +1,116 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* APP BASE */
+.app {
+  min-height: 100vh;
+  background: #f8f9fc;
+  color: #1a1a1a;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* HEADINGS */
+h1 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+.navbar a {
+  margin: 0 10px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #444;
+  transition: 0.3s;
+}
+
+.navbar a.active {
+  background: #6c63ff;
+  color: white;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.hero .highlight {
+  color: #7b61ff;
+}
+
+/* BUTTONS */
+button {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+button.primary {
+  background: linear-gradient(90deg, #7b61ff, #a855f7);
+  color: white;
+}
+
+button.primary:hover {
+  opacity: 0.9;
+}
+
+button.secondary {
+  background: white;
+  border: 1px solid #ddd;
+}
+
+/* GRID + CARDS */
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}

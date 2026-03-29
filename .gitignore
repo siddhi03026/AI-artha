@@ -1,0 +1,21 @@
+# Monorepo ignores
+
+# Frontend
+artha-frontend/node_modules/
+artha-frontend/dist/
+artha-frontend/.env
+artha-frontend/.env.*
+!artha-frontend/.env.example
+
+# Backend
+artha-backend/node_modules/
+artha-backend/.env
+artha-backend/.env.*
+!artha-backend/.env.example
+
+# Logs and misc
+**/*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

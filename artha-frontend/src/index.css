@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color: #0f172a;
+    background-color: #f3f5f9;
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  html,
+  body,
+  #root {
+    @apply min-h-screen;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f3f5f9;
+    @apply m-0 text-slate-900 antialiased;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background: #ffffff;
+    border: 1px solid #dbe2ee;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  }
+
+  .neon-chip {
+    background: #eef2ff;
+    border: 1px solid #ddd6fe;
+    color: #7c3aed;
+  }
+
+  .neon-input {
+    background: #ffffff;
+    border: 1px solid #d6deea;
+    color: #0f172a;
+  }
+
+  .neon-input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.14);
+  }
+
+  .mesh-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mesh-overlay::before {
+    content: none;
+  }
+
+  .soft-card {
+    background: #ffffff;
+    border: 1px solid #dbe2ee;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  }
+
+  .primary-pill {
+    background: #5b21b6;
+    color: #ffffff;
+  }
+
+  .accent-gradient {
+    background: linear-gradient(90deg, #7c3aed 0%, #8b5cf6 60%, #9f7aea 100%);
+  }
+
+  .muted-label {
+    color: #64748b;
+  }
+}
