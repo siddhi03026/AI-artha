@@ -1,8 +1,16 @@
 import axios from 'axios';
 
+const rawBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const cleanedBaseUrl = String(rawBaseUrl).trim();
+const extractedHttpUrl = cleanedBaseUrl.match(/https?:\/\/[^\s]+/i)?.[0] || cleanedBaseUrl;
+const normalizedBaseUrl = extractedHttpUrl.replace(/\/+$/, '');
+const apiBaseUrl = normalizedBaseUrl.endsWith('/api')
+  ? normalizedBaseUrl
+  : `${normalizedBaseUrl}/api`;
+
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-  timeout: 10000,
+  baseURL: apiBaseUrl,
+  timeout: 20000,
 });
 
 export const submitOnboarding = (payload) => api.post('/onboarding', payload);
