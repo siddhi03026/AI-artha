@@ -1,6 +1,19 @@
 import axios from 'axios';
 
-const rawBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const DEFAULT_PROD_API_URL = 'https://ai-artha-dj4r.onrender.com';
+
+const getDefaultBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:5000';
+    }
+  }
+
+  return DEFAULT_PROD_API_URL;
+};
+
+const rawBaseUrl = import.meta.env.VITE_API_URL || getDefaultBaseUrl();
 const cleanedBaseUrl = String(rawBaseUrl).trim();
 const extractedHttpUrl = cleanedBaseUrl.match(/https?:\/\/[^\s]+/i)?.[0] || cleanedBaseUrl;
 const normalizedBaseUrl = extractedHttpUrl.replace(/\/+$/, '');
