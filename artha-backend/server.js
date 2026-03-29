@@ -30,6 +30,21 @@ app.get('/api/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+app.get('/api/health/ai', (_req, res) => {
+  const hasApiKey = Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim());
+  const baseUrl = process.env.OPENAI_BASE_URL || null;
+  const model = process.env.OPENAI_MODEL || null;
+
+  res.status(200).json({
+    status: 'ok',
+    ai: {
+      configured: hasApiKey,
+      baseUrl,
+      model,
+    },
+  });
+});
+
 app.use('/api/onboarding', onboardingRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/dashboard', dashboardRoutes);
