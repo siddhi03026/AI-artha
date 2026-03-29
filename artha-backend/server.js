@@ -19,6 +19,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/api', (_req, res) => {
+  res.status(200).json({
+    message: 'Artha AI API is running',
+    health: '/api/health',
+  });
+});
+
 app.get('/api/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });
