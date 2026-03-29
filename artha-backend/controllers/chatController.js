@@ -19,6 +19,14 @@ const getAIErrorDetails = (error) => {
 const generateAssistantReply = (message) => {
   const lowerMessage = message.toLowerCase();
 
+  if (
+    lowerMessage.includes('50-30-20') ||
+    lowerMessage.includes('50/30/20') ||
+    (lowerMessage.includes('50') && lowerMessage.includes('30') && lowerMessage.includes('20'))
+  ) {
+    return 'The 50-30-20 rule means: 50% of income for needs (rent, food, bills), 30% for wants (shopping, outings), and 20% for savings or debt repayment. If your expenses are tight, start with 60-25-15 and move toward 50-30-20 gradually.';
+  }
+
   if (lowerMessage.includes('save')) {
     return 'Great intent. A practical start is the 50/30/20 rule: 50% needs, 30% wants, and 20% savings or debt repayment.';
   }

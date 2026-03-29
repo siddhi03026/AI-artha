@@ -6,12 +6,13 @@ const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
 const GROQ_DEFAULT_MODEL = 'llama-3.1-8b-instant';
 
 const isGroqKey = (apiKey = '') => apiKey.startsWith('gsk_');
+const normalizeEnvValue = (value = '') => String(value).trim().replace(/^['\"]|['\"]$/g, '');
 
 const getCompletionsUrl = () => {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = normalizeEnvValue(process.env.OPENAI_API_KEY || '');
   const fallbackBaseUrl = isGroqKey(apiKey) ? GROQ_BASE_URL : DEFAULT_BASE_URL;
-  const rawBaseUrl = process.env.OPENAI_BASE_URL || fallbackBaseUrl;
-  const baseURL = String(rawBaseUrl).trim().replace(/\/+$/, '');
+  const rawBaseUrl = normalizeEnvValue(process.env.OPENAI_BASE_URL || fallbackBaseUrl);
+  const baseURL = rawBaseUrl.replace(/\/+$/, '');
 
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY is not configured');
@@ -47,10 +48,10 @@ const buildSystemPrompt = (userProfile = {}) => {
 };
 
 const getChatCompletion = async ({ message, history = [], userProfile = {} }) => {
-  const apiKey = process.env.OPENAI_API_KEY || '';
+  const apiKey = normalizeEnvValue(process.env.OPENAI_API_KEY || '');
   const completionsUrl = getCompletionsUrl();
   const defaultModel = isGroqKey(apiKey) ? GROQ_DEFAULT_MODEL : DEFAULT_MODEL;
-  const model = process.env.OPENAI_MODEL || defaultModel;
+  const model = normalizeEnvValue(process.env.OPENAI_MODEL || defaultModel);
 
   const formattedHistory = history.slice(-8).map((item) => ({
     role: item.role,
