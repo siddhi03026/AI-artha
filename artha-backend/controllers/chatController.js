@@ -4,6 +4,18 @@ const { getChatCompletion } = require('../services/aiAgentService');
 
 const DEFAULT_USER_ID = 'demo-user-123';
 
+const getAIErrorDetails = (error) => {
+  const status = error?.response?.status;
+  const data = error?.response?.data;
+  const message = error?.message || 'Unknown AI error';
+
+  return {
+    status,
+    message,
+    data,
+  };
+};
+
 const generateAssistantReply = (message) => {
   const lowerMessage = message.toLowerCase();
 
@@ -47,7 +59,8 @@ const chatWithConcierge = async (req, res) => {
         userProfile: user,
       });
       source = 'ai';
-    } catch (_aiError) {
+    } catch (aiError) {
+      console.error('AI provider failed, using fallback:', getAIErrorDetails(aiError));
       assistantResponse = generateAssistantReply(message);
     }
 

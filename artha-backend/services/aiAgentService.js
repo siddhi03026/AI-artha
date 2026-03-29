@@ -7,23 +7,30 @@ const GROQ_DEFAULT_MODEL = 'llama-3.1-8b-instant';
 
 const isGroqKey = (apiKey = '') => apiKey.startsWith('gsk_');
 
-const getClient = () => {
+const getCompletionsUrl = () => {
   const apiKey = process.env.OPENAI_API_KEY;
   const fallbackBaseUrl = isGroqKey(apiKey) ? GROQ_BASE_URL : DEFAULT_BASE_URL;
-  const baseURL = process.env.OPENAI_BASE_URL || fallbackBaseUrl;
+  const rawBaseUrl = process.env.OPENAI_BASE_URL || fallbackBaseUrl;
+  const baseURL = String(rawBaseUrl).trim().replace(/\/+$/, '');
 
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY is not configured');
   }
 
-  return axios.create({
-    baseURL,
-    timeout: 15000,
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-  });
+  if (baseURL.endsWith('/chat/completions')) {
+    return baseURL;
+  }
+
+  if (baseURL.endsWith('/v1') || baseURL.endsWith('/openai/v1')) {
+    return `${baseURL}/chat/completions`;
+  }
+
+  // Allow users to set OPENAI_BASE_URL as provider root (e.g. https://api.groq.com)
+  if (isGroqKey(apiKey)) {
+    return `${baseURL}/openai/v1/chat/completions`;
+  }
+
+  return `${baseURL}/v1/chat/completions`;
 };
 
 const buildSystemPrompt = (userProfile = {}) => {
@@ -40,8 +47,8 @@ const buildSystemPrompt = (userProfile = {}) => {
 };
 
 const getChatCompletion = async ({ message, history = [], userProfile = {} }) => {
-  const client = getClient();
   const apiKey = process.env.OPENAI_API_KEY || '';
+  const completionsUrl = getCompletionsUrl();
   const defaultModel = isGroqKey(apiKey) ? GROQ_DEFAULT_MODEL : DEFAULT_MODEL;
   const model = process.env.OPENAI_MODEL || defaultModel;
 
@@ -60,7 +67,13 @@ const getChatCompletion = async ({ message, history = [], userProfile = {} }) =>
     ],
   };
 
-  const response = await client.post('/chat/completions', payload);
+  const response = await axios.post(completionsUrl, payload, {
+    timeout: 15000,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+  });
   const content = response.data?.choices?.[0]?.message?.content?.trim();
 
   if (!content) {
